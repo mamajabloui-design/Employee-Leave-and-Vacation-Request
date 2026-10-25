@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Profile - LeavePortal{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 550px; margin: 0 auto;">
+    <h2>Employee Profile Management</h2>
+    <hr><br>
+
+    <form method="POST">
+        <label>Employee Code</label>
+        <input type="text" value="{{ user.emp_code }}" disabled style="background: var(--bg-main);">
+
+        <label>Email Address</label>
+        <input type="email" value="{{ user.email }}" disabled style="background: var(--bg-main);">
+
+        <label>Full Name</label>
+        <input type="text" name="full_name" value="{{ user.full_name }}" required>
+
+        <label>Department</label>
+        <input type="text" name="department" value="{{ user.department }}" required>
+
+        <label>Position Title</label>
+        <input type="text" name="position" value="{{ user.position }}" required>
+
+        <label>Change Password (leave blank to keep current password)</label>
+        <input type="password" name="new_password" placeholder="New Password">
+
+        <button type="submit" class="btn btn-block">Update Profile</button>
+    </form>
+</div>
+{% endblock %}

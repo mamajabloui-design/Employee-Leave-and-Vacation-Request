@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - LeavePortal{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user.full_name }} ({{ user.role }})</h2>
+<p style="color: var(--text-muted); margin-bottom: 1.5rem;">Department: {{ user.department }} | Position: {{ user.position }}</p>
+
+{% if session.get('role') == 'Admin' %}
+<div class="grid">
+    <div class="stat-card">
+        <h3>Pending Requests</h3>
+        <p>{{ pending_count }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Approved Requests</h3>
+        <p>{{ approved_count }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Employees</h3>
+        <p>{{ total_employees }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Recent Submitted Leave Applications</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Emp ID</th>
+                    <th>Employee</th>
+                    <th>Type</th>
+                    <th>Duration</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in recent_requests %}
+                <tr>
+                    <td>{{ req.emp_code }}</td>
+                    <td>{{ req.full_name }}</td>
+                    <td>{{ req.leave_type }}</td>
+                    <td>{{ req.start_date }} to {{ req.end_date }}</td>
+                    <td>{{ req.total_days }}</td>
+                    <td><span class="badge badge-{{ req.status.lower() }}">{{ req.status }}</span></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6">No leave applications found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% else %}
+<div class="grid">
+    <div class="stat-card">
+        <h3>Vacation Leave Balance</h3>
+        <p>{{ user.vacation_balance }} Days</p>
+    </div>
+    <div class="stat-card">
+        <h3>Sick Leave Balance</h3>
+        <p>{{ user.sick_balance }} Days</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3>My Leave Requests & Status History</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Dates</th>
+                    <th>Days</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Manager Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.leave_type }}</td>
+                    <td>{{ req.start_date }} to {{ req.end_date }}</td>
+                    <td>{{ req.total_days }}</td>
+                    <td>{{ req.reason }}</td>
+                    <td><span class="badge badge-{{ req.status.lower() }}">{{ req.status }}</span></td>
+                    <td>{{ req.admin_remark or 'N/A' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6">You have not submitted any leave requests yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

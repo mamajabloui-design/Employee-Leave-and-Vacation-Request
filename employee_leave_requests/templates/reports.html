@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Reports - LeavePortal{% endblock %}
+
+{% block content %}
+<h2>Leave Applications & Transactions Report</h2>
+<br>
+
+<div class="grid">
+    <div class="stat-card">
+        <h3>Total Submitted Requests</h3>
+        <p>{{ total }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Approved</h3>
+        <p style="color: var(--success);">{{ approved }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Pending</h3>
+        <p style="color: var(--warning);">{{ pending }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Rejected</h3>
+        <p style="color: var(--danger);">{{ rejected }}</p>
+    </div>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Approved Leaves Breakdown by Type</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Leave Type</th>
+                        <th>Approved Requests</th>
+                        <th>Total Days Used</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in type_breakdown %}
+                    <tr>
+                        <td>{{ item.leave_type }}</td>
+                        <td>{{ item.count }}</td>
+                        <td>{{ item.days }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3">No data available.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Leave Requests by Department</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Total Requests</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dept in dept_breakdown %}
+                    <tr>
+                        <td>{{ dept.department }}</td>
+                        <td>{{ dept.total_requests }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="2">No data available.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

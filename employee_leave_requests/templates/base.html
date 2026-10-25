@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Leave Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}" class="brand">
+            <span class="brand-badge">L</span>
+            <span class="brand-name">LeavePortal</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-desktop">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a>
+                
+                {% if session.get('role') == 'Employee' %}
+                    <a href="{{ url_for('apply_leave') }}" class="{% if request.endpoint == 'apply_leave' %}active{% endif %}">Apply Leave</a>
+                {% endif %}
+
+                {% if session.get('role') == 'Admin' %}
+                    <a href="{{ url_for('manage_leaves') }}" class="{% if request.endpoint == 'manage_leaves' %}active{% endif %}">Manage Requests</a>
+                    <a href="{{ url_for('add_employee') }}" class="{% if request.endpoint == 'add_employee' %}active{% endif %}">Add User</a>
+                    <a href="{{ url_for('reports') }}" class="{% if request.endpoint == 'reports' %}active{% endif %}">Reports</a>
+                {% endif %}
+
+                <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">Profile</a>
+                <a href="{{ url_for('logout') }}" class="btn-nav-logout">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn-nav-login {% if request.endpoint == 'login' %}active{% endif %}">Login</a>
+            {% endif %}
+        </nav>
+
+        <!-- Hamburger Toggle Button -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <nav class="nav-mobile">
+            {% if session.get('user_id') %}
+                <div class="user-info-mobile">
+                    <strong>{{ session.get('full_name') }}</strong>
+                    <span class="role-badge">{{ session.get('role') }}</span>
+                </div>
+                <hr>
+                <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a>
+                
+                {% if session.get('role') == 'Employee' %}
+                    <a href="{{ url_for('apply_leave') }}" class="{% if request.endpoint == 'apply_leave' %}active{% endif %}">Apply Leave</a>
+                {% endif %}
+
+                {% if session.get('role') == 'Admin' %}
+                    <a href="{{ url_for('manage_leaves') }}" class="{% if request.endpoint == 'manage_leaves' %}active{% endif %}">Manage Requests</a>
+                    <a href="{{ url_for('add_employee') }}" class="{% if request.endpoint == 'add_employee' %}active{% endif %}">Add User</a>
+                    <a href="{{ url_for('reports') }}" class="{% if request.endpoint == 'reports' %}active{% endif %}">Reports</a>
+                {% endif %}
+
+                <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">Profile</a>
+                <a href="{{ url_for('logout') }}" class="btn-logout-mobile">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="active">Login to Account</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <span>{{ message|safe }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.toggle('active');
+            mobileDrawer.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!hamburgerBtn.contains(e.target) && !mobileDrawer.contains(e.target)) {
+                hamburgerBtn.classList.remove('active');
+                mobileDrawer.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

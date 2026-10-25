@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Apply Leave - LeavePortal{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>Submit Vacation & Leave Request</h2>
+    <hr><br>
+
+    <form method="POST">
+        <label>Leave Type</label>
+        <select name="leave_type" required>
+            <option value="Vacation">Vacation Leave</option>
+            <option value="Sick Leave">Sick Leave</option>
+            <option value="Emergency">Emergency Leave</option>
+            <option value="Personal">Personal Leave</option>
+            <option value="Maternity/Paternity">Maternity/Paternity Leave</option>
+        </select>
+
+        <label>Start Date</label>
+        <input type="date" name="start_date" required>
+
+        <label>End Date</label>
+        <input type="date" name="end_date" required>
+
+        <label>Reason for Leave</label>
+        <textarea name="reason" rows="4" required placeholder="Detailed explanation for leave request..."></textarea>
+
+        <button type="submit" class="btn btn-block">Submit Request</button>
+    </form>
+</div>
+{% endblock %}

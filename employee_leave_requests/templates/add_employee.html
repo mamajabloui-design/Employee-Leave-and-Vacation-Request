@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Add Employee - LeavePortal{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>Register New Account (Admin Portal)</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Create new Employee or Administrator accounts.</p>
+    <hr>
+
+    <form method="POST">
+        <label>Account Role</label>
+        <select name="role" required>
+            <option value="Employee">Employee</option>
+            <option value="Admin">Administrator</option>
+        </select>
+
+        <label>Employee Code / ID</label>
+        <input type="text" name="emp_code" required placeholder="EMP102">
+
+        <label>Full Name</label>
+        <input type="text" name="full_name" required placeholder="Jane Smith">
+
+        <label>Email Address</label>
+        <input type="email" name="email" required placeholder="janesmith@company.com">
+
+        <label>Initial Password</label>
+        <input type="password" name="password" required placeholder="••••••••">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <label>Department</label>
+                <select name="department" required>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Operations">Operations</option>
+                </select>
+            </div>
+            <div>
+                <label>Position / Role Title</label>
+                <input type="text" name="position" required placeholder="Software Engineer">
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <label>Vacation Balance (Days)</label>
+                <input type="number" name="vacation_balance" value="15" required>
+            </div>
+            <div>
+                <label>Sick Balance (Days)</label>
+                <input type="number" name="sick_balance" value="10" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-block">Create Account</button>
+    </form>
+</div>
+{% endblock %}
